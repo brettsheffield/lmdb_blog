@@ -1,5 +1,7 @@
 #include "blog_common.h"
 
+#define BUFSIZE 4096
+
 int blog_write_newentry(char *k, char *v)
 {
 	int rc;
@@ -31,10 +33,40 @@ int blog_write_newentry(char *k, char *v)
 	return 0;
 }
 
+int blog_write_read_stdin(char **data)
+{
+	char *buf = NULL;
+	ssize_t bytes = 0;
+	ssize_t len = 0;
+
+	buf = malloc(BUFSIZE);
+	while ((bytes = read(STDIN_FILENO, buf + len, 1)) == 1) {
+		len += bytes;
+		if (len == BUFSIZE)
+			buf = realloc(buf, BUFSIZE);
+	}
+	buf[len - 1] = '\0';
+	*data = buf;
+
+	return 0;
+}
+
 int main(int argc, char **argv)
 {
-	printf("writing '%s' to key '%s'\n", argv[2], argv[1]);
+	char *data = NULL;
+	int rc = 0;
+
+	if (argc == 2)
+		blog_write_read_stdin(&data);
+	else
 	if (argc == 3)
-		return blog_write_newentry(argv[1], argv[2]);
-	return -1;
+		data = argv[2];
+	else
+		return -1;
+
+	printf("writing '%s' to key '%s'\n", data, argv[1]);
+	rc = blog_write_newentry(argv[1], data);
+	free(data);
+
+	return rc;
 }
