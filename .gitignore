@@ -1,0 +1,5 @@
+*.o
+*.swp
+blog_read
+blog_write
+.lmdb/
