@@ -66,7 +66,8 @@ int main(int argc, char **argv)
 
 	printf("writing '%s' to key '%s'\n", data, argv[1]);
 	rc = blog_write_newentry(argv[1], data);
-	free(data);
+	if (argc == 2)
+		free(data);
 
 	return rc;
 }
