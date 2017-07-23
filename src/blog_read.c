@@ -13,7 +13,7 @@ int blog_read_getentry(char *k, char **v)
 	key.mv_data = k;
 
 	E(mdb_env_create(&env));
-	E(mdb_env_open(env, DB_PATH, 0, S_IRWXU));
+	E(mdb_env_open(env, DB_PATH, MDB_NOSUBDIR, S_IRWXU));
 	E(mdb_txn_begin(env, NULL, MDB_RDONLY, &txn));
 	E(mdb_dbi_open(txn, NULL, 0, &dbi));
 

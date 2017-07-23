@@ -14,11 +14,11 @@ int blog_write_newentry(char *k, char *v)
 
 	key.mv_size = strlen(k) + 1;
 	key.mv_data = k;
-	data.mv_size = sizeof(v);
+	data.mv_size = strlen(v) + 1;
 	data.mv_data = v;
 
 	E(mdb_env_create(&env));
-	E(mdb_env_open(env, DB_PATH, 0, S_IRWXU));
+	E(mdb_env_open(env, DB_PATH, MDB_NOSUBDIR, S_IRWXU));
 	E(mdb_txn_begin(env, NULL, 0, &txn));
 	E(mdb_dbi_open(txn, NULL, 0, &dbi));
 

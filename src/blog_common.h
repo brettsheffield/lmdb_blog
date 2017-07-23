@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define DB_PATH "/var/cache/blog/"
+#define DB_PATH "/var/cache/blog/blog.mdb"
 
 #define E(expr) CHECK((rc = (expr)) == MDB_SUCCESS, #expr)
 #define RES(err, expr) ((rc = expr) == (err) || (CHECK(!rc, #expr), 0))
