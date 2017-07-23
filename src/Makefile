@@ -20,6 +20,8 @@ ${WRITER}: ${WRITER}.o
 ${WRITER}.o: ${WRITER}.c ${COMMON}
 	${CC} -c ${WRITER}.c ${LIBS}
 
+install: all
+	cp ${ALL} /usr/local/bin/
 
 .PHONY: clean
 
