@@ -38,12 +38,15 @@ int blog_write_read_stdin(char **data)
 	char *buf = NULL;
 	ssize_t bytes = 0;
 	ssize_t len = 0;
+	int bufsize = BUFSIZE;
 
-	buf = malloc(BUFSIZE);
+	buf = malloc(bufsize);
 	while ((bytes = read(STDIN_FILENO, buf + len, 1)) == 1) {
 		len += bytes;
-		if (len == BUFSIZE)
-			buf = realloc(buf, BUFSIZE);
+		if (len == bufsize) {
+			bufsize += BUFSIZE;
+			buf = realloc(buf, bufsize);
+		}
 	}
 	buf[len - 1] = '\0';
 	*data = buf;
@@ -64,7 +67,6 @@ int main(int argc, char **argv)
 	else
 		return -1;
 
-	printf("writing '%s' to key '%s'\n", data, argv[1]);
 	rc = blog_write_newentry(argv[1], data);
 	if (argc == 2)
 		free(data);
