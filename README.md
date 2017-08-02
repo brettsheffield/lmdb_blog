@@ -23,6 +23,7 @@ First, ensure lmdb is installed on your server, then configure and install libgl
 ```
 git clone https://github.com/brettsheffield/libgladdb.git
 cd libgladdb/src
+./configure
 make
 make install
 ```
@@ -35,6 +36,7 @@ https://github.com/brettsheffield/gladd
 ```
 git clone https://github.com/brettsheffield/gladd.git
 cd gladd/src
+./configure --with-openssl
 make
 make install
 ```
