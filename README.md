@@ -102,6 +102,8 @@ Something like this will do for a start:
 
 ```
 
+This will use the contents of the first H1 tag as the `<title>`.
+
 ### Prepare lmdb
 
 Ensure the lmdb database directory is readable and writable by you and gladd.
@@ -115,6 +117,9 @@ Create a html file, say post1.html, and feed it into lmdb like so:
 
 `blog_write index < post1.html`
 
+NB: HTML must be well formed.  Any mismatched tags will result in a 500 server error.  Lets all write well-formed HTML :-)  HTML must be contained within a single outer pair of tags.  I suggest `<html> </html>`.
+
+
 You can output it again with:
 
 `blog_read index`
@@ -122,6 +127,12 @@ You can output it again with:
 or redirect it to a file for re-editing:
 
 `blog-read index > /tmp/index.html`
+
+More posts can be added like so:
+
+`blog_write my-new-post < some.html`
+
+and this will be available at https://blog.example.com/my-new-post
 
 ### Test
 
