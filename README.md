@@ -82,23 +82,23 @@ Something like this will do for a start:
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
  <xsl:output method="html" encoding="UTF-8" indent="yes" />
-  <xsl:template match="@*|node()">
-   <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;&#xa;</xsl:text>
+ <xsl:template match="@*|node()">
+  <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;&#xa;</xsl:text>
           
-   <html lang="en">
-           <head>
-                   <title><xsl:value-of disable-output-escaping="yes" select="//h1"/> - My Blog</title>
-                   <link rel="stylesheet" href="/css/screen.css" />
-           </head>
-           <body>
+  <html lang="en">
+    <head>
+     <title><xsl:value-of disable-output-escaping="yes" select="//h1"/> - My Blog</title>
+     <link rel="stylesheet" href="/css/screen.css" />
+    </head>
+    <body>
 
-                   <div class="blogpost">
-					   <!--- blog post here --->
-                                           <xsl:copy-of disable-output-escaping="yes" select="child::node()" />
-                   </div>
+     <div class="blogpost">
+      <!--- blog post here --->
+      <xsl:copy-of disable-output-escaping="yes" select="child::node()" />
+     </div>
 
-           </body>
-   </html>
+   </body>
+  </html>
  </xsl:template>
 </xsl:stylesheet>
 
