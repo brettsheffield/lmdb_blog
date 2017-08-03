@@ -86,16 +86,16 @@ Something like this will do for a start:
   <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;&#xa;</xsl:text>
           
   <html lang="en">
-    <head>
-     <title><xsl:value-of disable-output-escaping="yes" select="//h1"/> - My Blog</title>
-     <link rel="stylesheet" href="/css/screen.css" />
-    </head>
-    <body>
+   <head>
+    <title><xsl:value-of disable-output-escaping="yes" select="//h1"/> - My Blog</title>
+    <link rel="stylesheet" href="/css/screen.css" />
+   </head>
+   <body>
 
-     <div class="blogpost">
-      <!--- blog post here --->
-      <xsl:copy-of disable-output-escaping="yes" select="child::node()" />
-     </div>
+    <div class="blogpost">
+     <!--- blog post here --->
+     <xsl:copy-of disable-output-escaping="yes" select="child::node()" />
+    </div>
 
    </body>
   </html>
