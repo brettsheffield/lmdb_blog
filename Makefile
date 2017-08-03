@@ -18,12 +18,12 @@
 # If not, see <http://www.gnu.org/licenses/>.
 
 all:
-	cd src/ && make
+	cd src/ && $(MAKE)
 
 install:
-	cd src/ && make install
+	cd src/ && $(MAKE) install
 
 .PHONY: clean
 
 clean:
-	cd src/ && make clean
+	cd src/ && $(MAKE) clean
