@@ -48,7 +48,7 @@ https://github.com/brettsheffield/gladd/blob/master/LETSENCRYPT.md
 
 #### Example gladd.conf
 
-The following gladd.conf is sufficient for an TLS-enabled blog:
+The following gladd.conf is sufficient for a TLS-enabled blog:
 
 ```
 debug 1
