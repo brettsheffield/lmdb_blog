@@ -119,7 +119,7 @@ Create a html file, say post1.html, and feed it into lmdb like so:
 
 `blog_write index < post1.html`
 
-NB: HTML must be well formed.  Any mismatched tags will result in a 500 server error.  Lets all write well-formed HTML :-)  HTML must be contained within a single outer pair of tags.  I suggest `<html> </html>`.
+NB: HTML must be well formed.  Any mismatched tags will result in a 500 server error.  Let's all write well-formed HTML :-)  HTML must be contained within a single outer pair of tags.  I suggest `<html> </html>`.
 
 
 You can output it again with:
