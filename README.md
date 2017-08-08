@@ -10,6 +10,8 @@ Designed to work with gladd + libgladdb.
 ### Install lmdb_blog
 
 ```
+git clone https://github.com/brettsheffield/lmdb_blog.git
+cd lmdb_blog
 make
 make install
 ```
@@ -105,6 +107,10 @@ Something like this will do for a start:
 ```
 
 This will use the contents of the first H1 tag as the `<title>`.
+
+Write this to lmdb:
+
+`blog_write template.base < template.xsl`
 
 ### Prepare lmdb
 
