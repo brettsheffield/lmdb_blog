@@ -3,7 +3,7 @@
  *
  * this file is part of lmdb_blog
  *
- * Copyright (c) 2017 Brett Sheffield <brett@gladserv.com>
+ * Copyright (c) 2017-2018 Brett Sheffield <brett@gladserv.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include <unistd.h>
 
 #define DB_PATH "/var/cache/blog/blog.mdb"
+#define DBCOUNT 128
 
 /* These 3 lines from lmdb sources
  * Copyright 2011-2017 Howard Chu, Symas Corp

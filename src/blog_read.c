@@ -3,7 +3,7 @@
  *
  * this file is part of lmdb_blog
  *
- * Copyright (c) 2017 Brett Sheffield <brett@gladserv.com>
+ * Copyright (c) 2017-2018 Brett Sheffield <brett@gladserv.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 #include "blog_common.h"
 
-int blog_read_getentry(char *k, char **v)
+int blog_read_getentry(char *database, char *k, char **v)
 {
 	int rc;
 
@@ -35,9 +35,10 @@ int blog_read_getentry(char *k, char **v)
 	key.mv_data = k;
 
 	E(mdb_env_create(&env));
+	E(mdb_env_set_maxdbs(env, DBCOUNT));
 	E(mdb_env_open(env, DB_PATH, MDB_NOSUBDIR, S_IRWXU));
 	E(mdb_txn_begin(env, NULL, MDB_RDONLY, &txn));
-	E(mdb_dbi_open(txn, NULL, 0, &dbi));
+	E(mdb_dbi_open(txn, database, MDB_DUPSORT, &dbi));
 
 	E(mdb_get(txn, dbi, &key, &data));
 	mdb_txn_abort(txn);
@@ -51,9 +52,17 @@ int blog_read_getentry(char *k, char **v)
 
 int main(int argc, char **argv)
 {
+	char *database = "*";
 	char *data = NULL;
-	if (argc == 2) {
-		blog_read_getentry(argv[1], &data);
+	int opts = 0;
+
+	if ((strcmp(argv[1], "--database") == 0) || (strcmp(argv[1], "-d") == 0)) {
+		database = argv[2];
+		opts += 2;
+	}
+
+	if (argc - opts == 2) {
+		blog_read_getentry(database, argv[1 + opts], &data);
 		puts(data);
 		free(data);
 		return 0;
