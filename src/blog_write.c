@@ -40,7 +40,8 @@ int blog_write_newentry(char *database, char *k, char *v)
 	data.mv_data = v;
 
 	E(mdb_env_create(&env));
-	E(mdb_env_set_maxdbs(env, DBCOUNT));
+	if (database)
+		E(mdb_env_set_maxdbs(env, DBCOUNT));
 	E(mdb_env_open(env, DB_PATH, MDB_NOSUBDIR, S_IRWXU));
 	E(mdb_txn_begin(env, NULL, 0, &txn));
 	E(mdb_dbi_open(txn, database, MDB_DUPSORT|MDB_CREATE, &dbi));
@@ -79,7 +80,7 @@ int blog_write_read_stdin(char **data)
 
 int main(int argc, char **argv)
 {
-	char *database = "*";
+	char *database = NULL;
 	char *data = NULL;
 	int rc = 0;
 	int opts = 0;
