@@ -3,4 +3,5 @@
 blog_read
 blog_write
 blog_dump
+blog_import
 .lmdb/

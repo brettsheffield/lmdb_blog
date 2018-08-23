@@ -1,9 +1,9 @@
 /*
- * blog_write.c
+ * blog_import.c
  *
  * this file is part of lmdb_blog
  *
- * Copyright (c) 2017-2018 Brett Sheffield <brett@gladserv.com>
+ * Copyright (c) 2018 Brett Sheffield <brett@gladserv.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,51 +21,49 @@
  */
 
 #include "blog_common.h"
+#include <sys/types.h>
+#include <dirent.h>
 
-int blog_write_read_stdin(char **data)
+int blog_import_all()
 {
+	int rc = 0;
+	DIR *d = NULL;
+	FILE *f = NULL;
+	struct dirent *dp;
 	char *buf = NULL;
-	ssize_t bytes = 0;
-	ssize_t len = 0;
-	int bufsize = BUFSIZE;
+	long bufsize = 0;
+	long l = 0;
 
-	buf = malloc(bufsize);
-	while ((bytes = read(STDIN_FILENO, buf + len, 1)) == 1) {
-		len += bytes;
-		if (len == bufsize) {
-			bufsize += BUFSIZE;
-			buf = realloc(buf, bufsize);
+	/* cycle through all files in current directory and import */
+	d = opendir(".");
+	while ((dp = readdir(d)) != NULL && rc == 0)
+	{
+		if (dp->d_type == DT_REG) {
+			puts(dp->d_name);
+			f = fopen(dp->d_name, "r");
+
+			/* make sure our buffer is big enough */
+			fseek(f, 0L, SEEK_END);
+			l = ftell(f);
+			fseek(f, 0L, SEEK_SET);
+			if (l > bufsize) {
+				bufsize = l;
+				buf = realloc(buf, bufsize + 1);
+			}
+
+			fread(buf, bufsize, 1, f);
+			fclose(f);
+			buf[l + 1] = '\0';
+			rc = blog_write_newentry(NULL, dp->d_name, buf);
 		}
 	}
-	buf[len - 1] = '\0';
-	*data = buf;
+	closedir(d);
 
 	return 0;
 }
 
 int main(int argc, char **argv)
 {
-	char *database = NULL;
-	char *data = NULL;
-	int rc = 0;
-	int opts = 0;
-
-	if ((strcmp(argv[1], "--database") == 0) || (strcmp(argv[1], "-d") == 0)) {
-		database = argv[2];
-		opts += 2;
-	}
-
-	if (argc - opts == 2)
-		blog_write_read_stdin(&data);
-	else
-	if (argc - opts == 3)
-		data = argv[2 + opts];
-	else
-		return -1;
-
-	rc = blog_write_newentry(database, argv[1 + opts], data);
-	if (argc - opts == 2)
-		free(data);
-
-	return rc;
+	blog_import_all();
+	return 0;
 }

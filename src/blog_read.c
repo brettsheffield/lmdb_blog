@@ -39,7 +39,7 @@ int blog_read_getentry(char *database, char *k, char **v)
 		E(mdb_env_set_maxdbs(env, DBCOUNT));
 	E(mdb_env_open(env, DB_PATH, MDB_NOSUBDIR, S_IRWXU));
 	E(mdb_txn_begin(env, NULL, MDB_RDONLY, &txn));
-	E(mdb_dbi_open(txn, database, MDB_DUPSORT, &dbi));
+	E(mdb_dbi_open(txn, database, 0, &dbi));
 
 	E(mdb_get(txn, dbi, &key, &data));
 	mdb_txn_abort(txn);

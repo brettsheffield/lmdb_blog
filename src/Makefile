@@ -21,30 +21,40 @@ PROGRAM=blog
 READER=${PROGRAM}_read
 WRITER=${PROGRAM}_write
 DUMPER=${PROGRAM}_dump
-ALL=${READER} ${WRITER} ${DUMPER}
+IMPORTER=${PROGRAM}_import
+ALL=${READER} ${WRITER} ${DUMPER} ${IMPORTER}
 CC=gcc -Wall -Werror -g
 LIBS=-llmdb
-COMMON=${PROGRAM}_common.h
+COMMON=${PROGRAM}_common
 
 all: ${ALL}
+	
+blog_common.o: blog_common.h blog_common.c
+	${CC} -c blog_common.c ${LIBS}
 
-${READER}: ${READER}.o
+${READER}: ${READER}.o ${COMMON}.o
 	${CC} -o ${READER} ${READER}.o ${LIBS}
 
-${READER}.o: ${READER}.c ${COMMON}
+${READER}.o: ${READER}.c ${COMMON}.h
 	${CC} -c ${READER}.c ${LIBS}
 
-${WRITER}: ${WRITER}.o
-	${CC} -o ${WRITER} ${WRITER}.o ${LIBS}
+${WRITER}: ${WRITER}.o ${COMMON}.o
+	${CC} -o ${WRITER} ${WRITER}.o ${COMMON}.o ${LIBS}
 
-${WRITER}.o: ${WRITER}.c ${COMMON}
+${WRITER}.o: ${WRITER}.c ${COMMON}.h
 	${CC} -c ${WRITER}.c ${LIBS}
 
-${DUMPER}: ${DUMPER}.o
+${DUMPER}: ${DUMPER}.o ${COMMON}.o
 	${CC} -o ${DUMPER} ${DUMPER}.o ${LIBS}
 
-${DUMPER}.o: ${DUMPER}.c ${COMMON}
+${DUMPER}.o: ${DUMPER}.c ${COMMON}.h
 	${CC} -c ${DUMPER}.c ${LIBS}
+
+${IMPORTER}: ${IMPORTER}.o ${COMMON}.o
+	${CC} -o ${IMPORTER} ${IMPORTER}.o ${COMMON}.o ${LIBS}
+
+${IMPORTER}.o: ${IMPORTER}.c ${COMMON}.h
+	${CC} -c ${IMPORTER}.c ${LIBS}
 
 install: all
 	cp ${ALL} /usr/local/bin/

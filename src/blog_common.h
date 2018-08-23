@@ -30,6 +30,7 @@
 
 #define DB_PATH "/var/cache/blog/blog.mdb"
 #define DBCOUNT 128
+#define BUFSIZE 4096
 
 /* These 3 lines from lmdb sources
  * Copyright 2011-2017 Howard Chu, Symas Corp
@@ -38,3 +39,5 @@
 #define RES(err, expr) ((rc = expr) == (err) || (CHECK(!rc, #expr), 0))
 #define CHECK(test, msg) ((test) ? (void)0 : ((void)fprintf(stderr, \
         "%s:%d: %s: %s\n", __FILE__, __LINE__, msg, mdb_strerror(rc)), abort()))
+
+int blog_write_newentry(char *database, char *k, char *v);
