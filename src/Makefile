@@ -1,7 +1,7 @@
 # 
 # this file is part of lmdb_blog
 # 
-# Copyright (c) 2017 Brett Sheffield <brett@gladserv.com>
+# Copyright (c) 2017-2018 Brett Sheffield <brett@gladserv.com>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,8 @@
 PROGRAM=blog
 READER=${PROGRAM}_read
 WRITER=${PROGRAM}_write
-ALL=${READER} ${WRITER}
+DUMPER=${PROGRAM}_dump
+ALL=${READER} ${WRITER} ${DUMPER}
 CC=gcc -Wall -Werror -g
 LIBS=-llmdb
 COMMON=${PROGRAM}_common.h
@@ -38,6 +39,12 @@ ${WRITER}: ${WRITER}.o
 
 ${WRITER}.o: ${WRITER}.c ${COMMON}
 	${CC} -c ${WRITER}.c ${LIBS}
+
+${DUMPER}: ${DUMPER}.o
+	${CC} -o ${DUMPER} ${DUMPER}.o ${LIBS}
+
+${DUMPER}.o: ${DUMPER}.c ${COMMON}
+	${CC} -c ${DUMPER}.c ${LIBS}
 
 install: all
 	cp ${ALL} /usr/local/bin/

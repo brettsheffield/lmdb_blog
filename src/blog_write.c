@@ -46,7 +46,7 @@ int blog_write_newentry(char *database, char *k, char *v)
 	E(mdb_txn_begin(env, NULL, 0, &txn));
 	E(mdb_dbi_open(txn, database, MDB_DUPSORT|MDB_CREATE, &dbi));
 
-	mdb_put(txn, dbi, &key, &data, 0);
+	E(mdb_put(txn, dbi, &key, &data, 0));
 
 	E(mdb_txn_commit(txn));
 	E(mdb_env_stat(env, &mst));
